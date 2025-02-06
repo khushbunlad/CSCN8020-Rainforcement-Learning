@@ -155,6 +155,31 @@ class GridWorld():
 
             self.update_value_function(V_copy)  # Update the value function
 
+    def value_iterationOptimized(self, threshold=1e-4, num_iterations=1000):
+        for _ in range(num_iterations):
+            delta = 0  # Track the maximum change
+            
+            for i in range(self.env_size):
+                for j in range(self.env_size):
+                    if self.is_terminal_state(i, j):
+                        continue  # Skip terminal state
+                    
+                    # Compute max value for this state
+                    max_value, best_action, _ = self.calculate_max_value(i, j)
+
+                    # Update the value function in-place
+                    old_value = self.V[i, j]
+                    self.V[i, j] = max_value
+                    
+                    # Track the max change across states
+                    delta = max(delta, abs(old_value - max_value))
+
+                    # Store best action in greedy policy
+                    self.pi_greedy[i, j] = best_action
+
+            # Stop if values have converged
+            if delta < threshold:
+                break
 
 
 # Visualization of the value function and policy
