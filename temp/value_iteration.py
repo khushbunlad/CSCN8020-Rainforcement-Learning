@@ -181,7 +181,6 @@ class GridWorld():
             if delta < threshold:
                 break
 
-
 # Visualization of the value function and policy
 def plot_grid(gridworld):
     fig, ax = plt.subplots(figsize=(6, 6))
